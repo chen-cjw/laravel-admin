@@ -50,30 +50,6 @@ class UserController extends Controller
     }
 
     /**
-     * Make a show builder.
-     *
-     * @param mixed $id
-     * @return Show
-     */
-    protected function detail($id)
-    {
-        $show = new Show(User::findOrFail($id));
-
-        $show->id('Id');
-        $show->name('Name');
-        $show->phone('Phone');
-        $show->weapp_openid('Weapp openid');
-        $show->weixin_session_key('Weixin session key');
-        $show->password('Password');
-        $show->point('Point');
-        $show->deleted_at('Deleted at');
-        $show->created_at('Created at');
-        $show->updated_at('Updated at');
-
-        return $show;
-    }
-
-    /**
      * Make a form builder.
      *
      * @return Form
