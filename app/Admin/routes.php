@@ -13,5 +13,6 @@ Route::group([
     $router->get('/', 'HomeController@index')->name('admin.home');
     $router->resource('/users', 'Admin\UserController');
     $router->resource('/consignment_sample', 'Lab\ConsignmentSampleController');
+    $router->resource('/consignment_report', 'Lab\ConsignmentReportController');
 
 });

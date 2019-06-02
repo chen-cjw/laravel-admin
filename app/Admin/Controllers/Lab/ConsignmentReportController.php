@@ -16,7 +16,7 @@ class ConsignmentReportController extends Controller
 
     public function __construct()
     {
-        $this->header = '会员';
+        $this->header = '检测项目';
     }
 
     /**
@@ -31,10 +31,19 @@ class ConsignmentReportController extends Controller
 //        'is_close','remark','update_time','create_time','file_url'
 //    ];
         $grid = new Grid(new ConsignmentReport);
-        $grid->id('编号')->sortable();
-        $grid->name('用户名');
+        $grid->id('ID')->sortable();
+        $grid->test_result('检验结论')->editable();
+        $grid->test_standard('检验依据')->editable();
+        $grid->remark('结论')->editable();
+        $grid->disableActions(); // 禁用行操作列
 
+        // 查询过滤
+        $grid->filter(function($filter){
 
+            // 在这里添加字段过滤器
+            $filter->like('sample_id', '报告编制ID');
+
+        });
         return $grid;
     }
 

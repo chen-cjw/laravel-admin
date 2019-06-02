@@ -16,7 +16,7 @@ class ConsignmentSampleController extends Controller
 
     public function __construct()
     {
-        $this->header = '会员';
+        $this->header = '报告编制';
     }
 
     /**
@@ -27,8 +27,8 @@ class ConsignmentSampleController extends Controller
     protected function grid()
     {
         $grid = new Grid(new ConsignmentSample);
-        $grid->id('id')->sortable();
-        $grid->code('样品编号')->editable();
+        $grid->id('ID')->sortable();
+        $grid->code('样品编号');
         $grid->name('样品名称');
         $grid->customer_name('客户名称');
         $grid->report()->is_print('是否打印');
@@ -38,7 +38,7 @@ class ConsignmentSampleController extends Controller
 
         $grid->disableActions(); // 禁用行操作列
         $grid->comment('操作')->display(function () {
-            return "<a href="."/admin/users/".$this->id.">查看</a>";
+            return "<a href="."/admin/consignment_report?sample_id=".$this->id.">检测项目</a>";
         });
 
         // 查询过滤
