@@ -82,12 +82,12 @@ class UserController extends Controller
     {
         $form = new Form(new User);
 
-        $form->text('name', 'Name');
-        $form->mobile('phone', 'Phone');
-        $form->text('weapp_openid', 'Weapp openid');
-        $form->text('weixin_session_key', 'Weixin session key');
-        $form->password('password', 'Password');
-        $form->decimal('point', 'Point')->default(0.00);
+        $form->text('name', '用户名');
+        $form->mobile('phone', '号码');
+        $form->text('weapp_openid', 'Openid');
+        $form->text('weixin_session_key', 'weixin_session_key');
+        $form->password('password', '密码');
+        $form->decimal('point', '积分')->default(0.00);
 
         return $form;
     }
