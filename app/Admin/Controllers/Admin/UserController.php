@@ -2,8 +2,8 @@
 
 namespace App\Admin\Controllers\Admin;
 
+use App\Admin\Controllers\Controller;
 use App\User;
-use App\Http\Controllers\Controller;
 use Encore\Admin\Controllers\HasResourceActions;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
@@ -13,6 +13,10 @@ use Encore\Admin\Show;
 class UserController extends Controller
 {
     use HasResourceActions;
+    public function __construct()
+    {
+        $this->header = '会员';
+    }
 
 
     /**
@@ -24,16 +28,23 @@ class UserController extends Controller
     {
         $grid = new Grid(new User);
 
-        $grid->id('编号');
+        $grid->id('编号')->sortable();
         $grid->name('用户名');
-        $grid->phone('号码');
+        $grid->phone('号码')->sortable();
         $grid->weapp_openid('Openid');
         $grid->weixin_session_key('weixin_session_key');
         //$grid->password('Password');
-        $grid->point('积分');
-        $grid->deleted_at('禁用时间');
-        $grid->created_at('创建时间');
-        $grid->updated_at('编辑时间');
+        $grid->point('积分')->sortable();
+        $grid->deleted_at('禁用时间')->sortable();
+        $grid->created_at('创建时间')->sortable();
+        $grid->updated_at('编辑时间')->sortable();
+        // 查询过滤
+        $grid->filter(function($filter){
+            // 在这里添加字段过滤器
+            $filter->like('name', '用户名');
+            $filter->like('phone', '号码');
+
+        });
 
         return $grid;
     }
