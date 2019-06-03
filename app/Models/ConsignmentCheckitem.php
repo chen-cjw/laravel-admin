@@ -10,6 +10,6 @@ class ConsignmentCheckitem extends Model
     protected $table = 'lab_consignment_checkitem';
     protected $fillable = [
         'name','unit','tech_req','test_value','test_method','orgs',
-        'user_id','user_name','remark','update_time','create_time'
+        'user_id','user_name','remark','update_time','create_time','sample_id'
     ];
 }
