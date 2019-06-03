@@ -19,6 +19,8 @@ Route::group([
     $router->get('/', 'HomeController@index')->name('admin.home');
     $router->resource('/users', 'Admin\UserController');
     $router->resource('/consignment_sample', 'Lab\ConsignmentSampleController');
+    $router->get('/customer/add_customer', 'Lab\CustomerController@addCustomerIndex');// 新增记录接口
+
     $router->resource('/consignment_report', 'Lab\ConsignmentReportController');
     $router->resource('/consignment_checkitem', 'Lab\ConsignmentCheckitemController');
     $router->resource('/customer', 'Lab\CustomerController');// 客户管理
