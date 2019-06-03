@@ -9,6 +9,7 @@ use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
+use PhpOffice\PhpWord\PhpWord;
 
 class ConsignmentReportController extends Controller
 {
@@ -74,5 +75,21 @@ class ConsignmentReportController extends Controller
 
 
         return $form;
+    }
+
+    public function download(){
+
+        $phpWord = new \PhpOffice\PhpWord\PhpWord();
+        $section = $phpWord->addSection();
+        $text = $section->addText('name');
+        $text = $section->addText('email');
+        $text = $section->addText('number',array('name'=>'Arial','size' => 20,'bold' => true));
+        $section->addImage("http://img.keketour.comme/M00/00/06/CeT6ddHtg142.jpg");
+        $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
+        $objWriter->save('Appdividend.docx');
+        var_dump(public_path('Appdividend.docx'));
+
+        return response()->download(public_path('Appdividend.docx'));
+
     }
 }

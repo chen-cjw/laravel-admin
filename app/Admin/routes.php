@@ -15,4 +15,6 @@ Route::group([
     $router->resource('/consignment_sample', 'Lab\ConsignmentSampleController');
     $router->resource('/consignment_report', 'Lab\ConsignmentReportController');
 
+    $router->get('/consignment_report/download', 'Lab\ConsignmentReportControllerr@download');
+
 });
