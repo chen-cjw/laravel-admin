@@ -45,7 +45,9 @@ class ConsignmentSampleController extends Controller
 
         $grid->disableActions(); // 禁用行操作列
         $grid->disableCreateButton();
-
+        $grid->download('下载')->display(function () {
+            return view('download');
+        });
         $grid->comment('操作')->display(function () {
             return "<a href="."/admin/consignment_checkitem?sample_id=".$this->id.">检测项目</a>"
                 ."<div style='width: 20px'></div><a href="."/admin/consignment_report/download?id=".$this->id.">报告下载</a>"
