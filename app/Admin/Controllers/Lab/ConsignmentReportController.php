@@ -101,8 +101,8 @@ class ConsignmentReportController extends Controller
 
     public function download()
     {
-        $id = \Request::get("id");
-        $report = ConsignmentReport::find($id);
+        $report_id = \Request::post("report_id");
+        $report = ConsignmentReport::find($report_id);
 //        Debugbar::info($id);
 
         if (!$report) {
