@@ -105,6 +105,8 @@ class CustomerController extends Controller
         ConsignmentReport::create(['sample_id'=>$customer->id]);
         $addCustomerData['sample_id'] =  $customer->id;
         ConsignmentSample::create($consignmentSample);
-        return 123;
+        //admin_toastr('新增记录成功！', 'success');
+        return redirect('/admin/customer/add_customer')->with('message', '新增记录成功！');
+
     }
 }

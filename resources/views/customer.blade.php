@@ -8,6 +8,20 @@
                 <div class="box-header with-border">
                     <h3 class="box-title"></h3>
                 </div>
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+                @if(!empty(session('message')))
+                    　　<div class="alert alert-success" role="alert">
+                        　　　　{{session('message')}}
+                        　　</div>
+                @endif
                 <!-- /.box-header -->
                 <!-- form start -->
                 {{--customer_name ,tel,car_no,openid--}}
