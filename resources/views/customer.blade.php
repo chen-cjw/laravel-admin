@@ -30,19 +30,19 @@
                     <div class="box-body">
                         <div class="form-group">
                             <label for="exampleInputEmail1">送检的客户名称</label>
-                            <input type="text" name="customer_name" class="form-control" id="exampleInputEmail1" placeholder="送检的客户名称">
+                            <input required type="text" name="customer_name" class="form-control" id="exampleInputEmail1" placeholder="送检的客户名称">
                         </div>
                         <div class="form-group">
                             <label for="exampleInputEmail1">车次号</label>
-                            <input type="text" name="car_no" class="form-control" id="exampleInputEmail1" placeholder="车次号">
+                            <input required type="text" name="car_no" class="form-control" id="exampleInputEmail1" placeholder="车次号">
                         </div>
                         <div class="form-group">
                             <label for="exampleInputEmail1">客户openid</label>
-                            <input type="text" name="openid" class="form-control" id="exampleInputEmail1" placeholder="客户openid">
+                            <input required type="text" name="openid" class="form-control" id="exampleInputEmail1" placeholder="客户openid">
                         </div>
                         <div class="form-group">
                             <label for="exampleInputEmail1">联系电话</label>
-                            <input type="text" name="tel" class="form-control" id="exampleInputEmail1" placeholder="联系电话">
+                            <input required type="text" name="tel" class="form-control" id="exampleInputEmail1" placeholder="联系电话">
                         </div>
                     </div>
                     <!-- /.box-body -->
