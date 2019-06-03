@@ -14,6 +14,7 @@ Route::group([
     $router->resource('/users', 'Admin\UserController');
     $router->resource('/consignment_sample', 'Lab\ConsignmentSampleController');
     $router->resource('/consignment_report', 'Lab\ConsignmentReportController');
+    $router->resource('/consignment_checkitem', 'Lab\ConsignmentCheckitemController');
 
     $router->get('/consignment_report/download', 'Lab\ConsignmentReportControllerr@download');
 
