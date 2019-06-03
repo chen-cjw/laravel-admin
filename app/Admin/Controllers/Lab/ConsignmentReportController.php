@@ -11,6 +11,7 @@ use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
+use http\Env\Request;
 use PhpOffice\PhpWord\PhpWord;
 use Barryvdh\Debugbar\Facade as Debugbar;
 
@@ -39,7 +40,7 @@ class ConsignmentReportController extends Controller
         $grid->disableActions(); // 禁用行操作列
 
         // 查询过滤
-        $grid->filter(function($filter){
+        $grid->filter(function ($filter) {
 
             // 在这里添加字段过滤器
             $filter->like('sample_id', '报告编制ID');
@@ -73,7 +74,8 @@ class ConsignmentReportController extends Controller
         return $form;
     }
 
-    public function download2(){
+    public function download2()
+    {
 
         $phpWord = new \PhpOffice\PhpWord\PhpWord();
 
@@ -81,7 +83,7 @@ class ConsignmentReportController extends Controller
         $section = $phpWord->addSection();
         $text = $section->addText('name');
         $text = $section->addText('email');
-        $text = $section->addText('number',array('name'=>'Arial','size' => 20,'bold' => true));
+        $text = $section->addText('number', array('name' => 'Arial', 'size' => 20, 'bold' => true));
         $section->addImage("http://pic-bucket.ws.126.net/photo/0003/2019-06-03/EGNSM9B400AJ0003NOS.jpg");
         $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
         $objWriter->save('Appdividend.docx');
@@ -91,13 +93,15 @@ class ConsignmentReportController extends Controller
 
     }
 
-    protected function sendMsg(){
+    protected function sendMsg()
+    {
         //存入数据到待发送记录表
 
     }
 
-    public function download($id)
+    public function download()
     {
+        $id = \Request::get("id");
         $report = ConsignmentReport::find($id);
 //        Debugbar::info($id);
 
@@ -105,7 +109,7 @@ class ConsignmentReportController extends Controller
             admin_toastr('报告不存在', 'error');
         }
 
-        if (empty($report->test_result)||empty($report->test_standard)) {
+        if (empty($report->test_result) || empty($report->test_standard)) {
             admin_toastr('请先去完善报告结论等内容', 'error');
         }
 
@@ -147,13 +151,13 @@ class ConsignmentReportController extends Controller
         return response()->download(public_path($filePath));
     }
 
-    private function getDate($time,$is_convert_num=true)
+    private function getDate($time, $is_convert_num = true)
     {
         $year = date('Y', $time);
         $month = date('m', $time);
         $day = date('d', $time);
         $yearString = '';
-        if($is_convert_num){
+        if ($is_convert_num) {
 
             for ($i = 0; $i < strlen($year); $i++) {
                 $yearString .= $this->getNumber($year[$i]);
@@ -161,7 +165,7 @@ class ConsignmentReportController extends Controller
 
             $month = $this->getNumber($month);
             $day = $this->getNumber($day);
-        }else{
+        } else {
             $yearString = $year;
         }
 
@@ -243,13 +247,13 @@ class ConsignmentReportController extends Controller
      */
     private function filter_check_item_name($item_name)
     {
-        $is_right =0;
+        $is_right = 0;
         $a = strpos($item_name, "[");
         $b = strpos($item_name, "]");
 
-        if ($a >= 0&&$b > $a) {
-            $is_right =1;
-        }else {
+        if ($a >= 0 && $b > $a) {
+            $is_right = 1;
+        } else {
             $a = strpos($item_name, "【");
             $b = strpos($item_name, "】");
             if ($a >= 0 && $b > $a) {
@@ -257,10 +261,10 @@ class ConsignmentReportController extends Controller
             }
         }
 
-        if($is_right){
-            $length = $b - $a+1;
-            $str = substr($item_name,$a,$length);
-            $item_name = str_replace($str,"",$item_name);
+        if ($is_right) {
+            $length = $b - $a + 1;
+            $str = substr($item_name, $a, $length);
+            $item_name = str_replace($str, "", $item_name);
         }
 
         return $item_name;
@@ -295,7 +299,7 @@ class ConsignmentReportController extends Controller
         $templateProcessor->cloneRow('name', count($checkItem));
 
         for ($i = 1; $i <= count($checkItem); $i++) {
-            $templateProcessor->setValue('in#' . $i,  $i);
+            $templateProcessor->setValue('in#' . $i, $i);
 
             $templateProcessor->setValue('cname#' . $i, $this->filter_check_item_name($checkItem[$i - 1]['name']));
             $templateProcessor->setValue('unit#' . $i, $checkItem[$i - 1]['unit']);

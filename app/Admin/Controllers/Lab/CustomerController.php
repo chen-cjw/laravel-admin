@@ -30,23 +30,16 @@ class CustomerController extends Controller
     protected function grid()
     {
         $grid = new Grid(new Customer);
-        $grid->model()->orderBy('id','desc');
+        $grid->model()->where('is_delete',0)->orderBy('id','desc');
         $grid->id('ID')->sortable();
         $grid->code('客户编号');
         $grid->name('客户名称');
-        $grid->openid('客户openid');
         $grid->contactor('联系人');
         $grid->tel('联系电话');
         $grid->email('邮箱');
         $grid->address('地址');
         $grid->receivables('应收账款数字');
-        $grid->fax('传真');
-        $grid->is_delete('是否删除')->display(function ($is_delete) {
-            return $is_delete ? '是' : '否';
-        });
-        $grid->update_time('编辑时间')->display(function ($update_time) {
-            return date('Y-m-d H:i',$update_time);
-        })->sortable();
+
         $grid->create_time('创建时间')->display(function ($create_time) {
             return date('Y-m-d H:i',$create_time);
         })->sortable();
@@ -64,7 +57,7 @@ class CustomerController extends Controller
 
         $form->text('code', '客户编号');
         $form->text('name', '客户名称');
-        $form->text('openid', '客户openid');
+//        $form->text('openid', '客户openid');
         $form->text('contactor', '联系人');
         $form->text('tel', '联系电话');
         $form->email('email', '邮箱');
@@ -72,8 +65,7 @@ class CustomerController extends Controller
         $form->decimal('receivables', '应收账款数字')->default(0.00);
         $form->text('fax', '传真');
         $form->switch('is_delete', '是否删除');
-        //$form->number('update_time', 'Update time');
-        //$form->number('create_time', 'Create time');
+
         return $form;
     }
     public function index(Content $content)

@@ -48,7 +48,7 @@ class ConsignmentSampleController extends Controller
 
         $grid->comment('操作')->display(function () {
             return "<a href="."/admin/consignment_checkitem?sample_id=".$this->id.">检测项目</a>"
-                ."<div style='width: 20px'></div><a href="."/admin/consignment_report/download?sample_id=".$this->id.">报告下载</a>"
+                ."<div style='width: 20px'></div><a href="."/admin/consignment_report/download?id=".$this->id.">报告下载</a>"
                 ."<div style='width: 20px'></div><a href="."/admin/consignment_report/sendMsg?sample_id=".$this->id.">消息提醒</a>";
         });
 
