@@ -14,7 +14,7 @@ Route::group([
     'middleware'    => config('admin.route.middleware'),
 ], function (Router $router) {
 
-    $router->get('/consignment_report/download', 'Lab\ConsignmentReportController@download');
+    $router->get('/consignment_report/download/{id}', 'Lab\ConsignmentReportController@download');
 
     $router->get('/', 'HomeController@index')->name('admin.home');
     $router->resource('/users', 'Admin\UserController');
