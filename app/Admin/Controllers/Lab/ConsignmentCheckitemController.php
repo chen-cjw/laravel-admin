@@ -28,22 +28,31 @@ class ConsignmentCheckitemController extends Controller
         $grid = new Grid(new ConsignmentCheckitem);
         //项目名称(name) 样品单位(unit) 技术要求(tech_req) 检验结果(test_value) 检测方法(test_method) 添加时间(create_time)
 
+        $grid->disableActions(); // 禁用行操作列
+        $grid->disableCreateButton();
+
         $grid->id('ID');
-        $grid->name('项目名称');
-        $grid->unit('样品单位');
-        $grid->tech_req('技术要求');
-        $grid->test_value('检验结果');
-        $grid->test_method('检测方法');
+        $grid->name('项目名称')->style('max-width:80px;word-break:break-all;');
+        $grid->unit('样品单位')->style('max-width:100px;word-break:break-all;');
+        $grid->tech_req('技术要求')->editable()->style('max-width:150px;word-break:break-all;');
+        $grid->test_value('检验结果')->editable()->style('max-width:150px;word-break:break-all;');
+        $grid->test_method('检测方法')->editable()->style('max-width:150px;word-break:break-all;');
         $grid->create_time('添加时间')->display(function($create_time) {
-            return date('Y-m-d H:i:s',$create_time);
-        });
+            return date('Y-m-d H:i',$create_time);
+        })->style('max-width:100px;word-break:break-all;');
+        $grid->update_time('修改时间')->display(function($update_time) {
+                return date('Y-m-d H:i',$update_time);
+            })->style('max-width:100px;word-break:break-all;');
+
         // 查询过滤
         $grid->filter(function($filter){
 
             // 在这里添加字段过滤器
-            $filter->like('name', '项目名称');
+            $filter->like('name', '检测项目名称');
+            $filter->like('sample_id', '样品ID');
 
         });
+
         return $grid;
     }
 
