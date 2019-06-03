@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class ConsignmentSample extends Model
 {
+    public $timestamps= false;
+
     protected $table = 'lab_consignment_sample';
 
     protected $fillable = [
