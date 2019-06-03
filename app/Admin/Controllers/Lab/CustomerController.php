@@ -98,6 +98,7 @@ class CustomerController extends Controller
         $addCustomerData['sample_id'] =  $customer->id;
         ConsignmentSample::create($consignmentSample);
         //admin_toastr('新增记录成功！', 'success');
+        return ['code'=>200,'message'=>'新增记录成功'];
         return redirect('/admin/customer/add_customer')->with('message', '新增记录成功！');
 
     }
