@@ -85,10 +85,15 @@ class ConsignmentSampleController extends Controller
                 $filter->like('customer_name', '客户名称');
                 $filter->where(function ($query) {
                     $input = $this->input;
-                    $query->whereHas('report', function ($query) use ($input) {
-                        $query->where('is_print');
+                    if($input == 'a') {
+                        $where = 0;
+                    }else {
+                        $where = 1;
+                    }
+                    $query->whereHas('report', function ($query) use ($where) {
+                        $query->where('is_print',$where);
                     });
-                }, '是否打印')->select(['否','是'])->default('否');
+                }, '是否打印')->select(['a'=>'否','b'=>'是'])->default('a');
                 $filter->use(new TimestampBetween('create_time','提交时间'))->datetime();
 
             });
