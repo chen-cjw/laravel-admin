@@ -22,7 +22,8 @@ class ConsignmentSampleController extends Controller
 
     /**
      * Make a grid builder.
-     *
+     * create_time[start]=2019-03-04 00:00:00&create_time[end]=2019-06-26 00:00:00
+     * 时间筛选条件 默认显示当天 或 未打印的报告  数据
      * @return Grid
      */
     protected function grid()
@@ -33,10 +34,11 @@ class ConsignmentSampleController extends Controller
         $grid->name('样品名称')->style('max-width:150px;word-break:break-all;');
         $grid->customer_name('客户名称')->style('max-width:150px;word-break:break-all;')->editable();
         $grid->report()->is_print('是否打印')->display(function ($is_print) {
-            return $is_print ? '是' : '否';
+            return $is_print==1 ? '<button type="button" class="btn btn-info btn-xs">是</button>' : '<button type="button" class="btn btn-warning btn-xs">否</button>';
         })->style('max-width:50px;word-break:break-all;');
         $grid->report()->is_send('是否通知')->display(function ($is_send) {
-            return $is_send ? '是' : '否';
+            return $is_send==1 ? '<button type="button" class="btn btn-primary btn-xs">是</button>' : '<button type="button" class="btn btn-danger btn-xs">否</button>';
+            return $is_send==1 ? '是' : '否';
         })->style('max-width:50px;word-break:break-all;');
         $grid->report()->test_result('检验结论')->style('max-width:150px;word-break:break-all;')->editable();
         $grid->report()->test_standard('检验依据')->style('max-width:150px;word-break:break-all;')->editable();
@@ -58,10 +60,22 @@ class ConsignmentSampleController extends Controller
         // 查询过滤
         $grid->filter(function($filter){
             // 在这里添加字段过滤器
-            $filter->like('code', '样品编号');
-            $filter->like('name', '样品名称');
-            $filter->like('customer_name', '客户名称');
-            $filter->use(new TimestampBetween('create_time','创建时间'))->datetime();
+            $filter->column(1/2, function ($filter) {
+                $filter->like('code', '样品编号');
+                $filter->like('name', '样品名称');
+            });
+            $filter->column(1/2, function ($filter) {
+                $filter->like('customer_name', '客户名称');
+
+                $filter->where(function ($query) {
+                    $input = $this->input;
+                    $query->whereHas('report', function ($query) use ($input) {
+                        $query->where('is_print', $input);
+                    });
+                }, '是否打印')->select(['否','是']);
+                $filter->use(new TimestampBetween('create_time','提交时间'))->datetime();
+
+            });
 
         });
         //id   样品编号 样品名称  客户名称   是否打印   是否发送模板消息   检验结论  检验依据
