@@ -114,27 +114,26 @@ class ConsignmentSampleController extends Controller
     {
         $reportId = request()->report_id;
         $sampleId = request()->sample_id;
-
         DB::beginTransaction();
         try {
             // 修改状态
-            ConsignmentReport::where('id',$reportId)->update(['is_send'=>1]);
 
             $consignmentSample = ConsignmentSample::find($sampleId);
             // 到另外一个数据，发送消息用
-            CustomerSendhis::create([
+            $customerSendhisRes = CustomerSendhis::create([
                 'code'=>$consignmentSample['code'],
                 'name'=>$consignmentSample['name'],
                 //'openid'=>$consignmentSample->consignment->openid,
                 'create_time'=>time(),
             ]);
+            ConsignmentReport::where('id',$reportId)->update(['is_send'=>1]);
 
             DB::commit();
-            admin_toastr('消息发送成功！', 'success');
-            return back();
+            admin_toastr('ID是'.$sampleId.'的，消息发送成功！', 'success');
+            return redirect('/admin/consignment_sample');
         } catch (\Exception $ex) {
             DB::rollback();
-            \Log::error('消息发送成功', ['msg' => $ex->getMessage()]);
+            \Log::error('消息发送失败', ['msg' => $ex->getMessage()]);
         }
     }
     
