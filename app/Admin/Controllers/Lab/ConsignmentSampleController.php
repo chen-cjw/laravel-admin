@@ -3,6 +3,7 @@
 namespace App\Admin\Controllers\Lab;
 
 use App\Admin\Controllers\Controller;
+use App\Admin\TimestampBetween;
 use App\Models\ConsignmentSample;
 use Encore\Admin\Controllers\HasResourceActions;
 use Encore\Admin\Form;
@@ -60,6 +61,7 @@ class ConsignmentSampleController extends Controller
             $filter->like('code', '样品编号');
             $filter->like('name', '样品名称');
             $filter->like('customer_name', '客户名称');
+            $filter->use(new TimestampBetween('create_time','创建时间'))->datetime();
 
         });
         //id   样品编号 样品名称  客户名称   是否打印   是否发送模板消息   检验结论  检验依据

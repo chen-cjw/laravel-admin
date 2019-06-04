@@ -3,6 +3,7 @@
 namespace App\Admin\Controllers\Lab;
 
 use App\Admin\Controllers\Controller;
+use App\Admin\TimestampBetween;
 use App\Models\ConsignmentCheckitem;
 use App\Models\ConsignmentReport;
 use App\Models\ConsignmentSample;
@@ -44,6 +45,7 @@ class ConsignmentReportController extends Controller
 
             // 在这里添加字段过滤器
             $filter->like('sample_id', '报告编制ID');
+            $filter->use(new TimestampBetween('create_time','创建时间'))->datetime();
 
         });
         return $grid;

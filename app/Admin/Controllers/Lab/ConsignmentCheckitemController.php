@@ -3,6 +3,7 @@
 namespace App\Admin\Controllers\Lab;
 
 use App\Admin\Controllers\Controller;
+use App\Admin\TimestampBetween;
 use App\Models\ConsignmentCheckitem;
 use Encore\Admin\Controllers\HasResourceActions;
 use Encore\Admin\Form;
@@ -50,6 +51,7 @@ class ConsignmentCheckitemController extends Controller
             // 在这里添加字段过滤器
             $filter->like('name', '检测项目名称');
             $filter->like('sample_id', '样品ID');
+            $filter->use(new TimestampBetween('create_time','创建时间'))->datetime();
 
         });
 

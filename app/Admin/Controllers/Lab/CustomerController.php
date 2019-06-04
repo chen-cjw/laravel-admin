@@ -3,6 +3,7 @@
 namespace App\Admin\Controllers\Lab;
 
 use App\Admin\Controllers\Controller;
+use App\Admin\TimestampBetween;
 use App\Models\ConsignmentCheckitem;
 use App\Models\ConsignmentReport;
 use App\Models\ConsignmentSample;
@@ -43,6 +44,18 @@ class CustomerController extends Controller
         $grid->create_time('创建时间')->display(function ($create_time) {
             return date('Y-m-d H:i',$create_time);
         })->sortable();
+
+        // 查询过滤
+        $grid->filter(function($filter){
+            // 在这里添加字段过滤器
+            $filter->like('code', '客户编号');
+            $filter->like('name', '客户名称');
+            $filter->like('contactor', '联系人');
+            $filter->like('tel', '联系电话');
+            $filter->use(new TimestampBetween('create_time','创建时间'))->datetime();
+
+        });
+
         return $grid;
     }
 
