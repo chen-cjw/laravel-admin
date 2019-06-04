@@ -66,13 +66,12 @@ class ConsignmentSampleController extends Controller
             });
             $filter->column(1/2, function ($filter) {
                 $filter->like('customer_name', '客户名称');
-
                 $filter->where(function ($query) {
                     $input = $this->input;
                     $query->whereHas('report', function ($query) use ($input) {
-                        $query->where('is_print', $input?$input:'否');
+                        $query->where('is_print');
                     });
-                }, '是否打印')->select(['否','是']);
+                }, '是否打印')->select(['否','是'])->default('否');
                 $filter->use(new TimestampBetween('create_time','提交时间'))->datetime();
 
             });
@@ -81,7 +80,9 @@ class ConsignmentSampleController extends Controller
         //id   样品编号 样品名称  客户名称   是否打印   是否发送模板消息   检验结论  检验依据
         $grid->tools(function (Grid\Tools $tools){
 
-            $tools->append("<a class='btn btn-primary btn-sm' href="."/admin/consignment_sample?create_time[start]=".date('Y-m-d 00:00:00').">搜索当天</a>");
+            $tools->append("<a class='btn btn-warning btn-sm' href="."/admin/consignment_sample?create_time[start]=".date('Y-m-d 00:00:00').">
+                                    筛选当天报告数据
+                                 </a>");
         });
 //          头部添加搜索按钮
 //        $grid->header(function ($query) {
