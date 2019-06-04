@@ -4,6 +4,7 @@ namespace App\Admin\Controllers\Lab;
 
 use App\Admin\Controllers\Controller;
 use App\Admin\TimestampBetween;
+use App\Models\ConsignmentReport;
 use App\Models\ConsignmentSample;
 use Encore\Admin\Controllers\HasResourceActions;
 use Encore\Admin\Form;
@@ -52,9 +53,16 @@ class ConsignmentSampleController extends Controller
         $grid->download('下载')->display(function () {
             return view('download',["report_id"=>52]);
         });
+        $grid->message_comment('消息提醒')->display(function () {
+            if($this->report) {
+                return view('update_is_send',["report_id"=>$this->report['id']]);
+            }
+            return admin_toastr('消息提醒失败,关系错了！', 'error') ;
+        });
         $grid->comment('操作')->display(function () {
-            return "<a href="."/admin/consignment_checkitem?sample_id=".$this->id.">检测项目</a>"
-                ."<div style='width: 20px'></div><a href="."/admin/consignment_report/sendMsg?sample_id=".$this->id.">消息提醒</a>";
+            return "<a href="."/admin/consignment_checkitem?sample_id=".$this->id.">检测项目</a>";
+//                .view('update_is_send',['report_id'=>$this->report->id]);
+//                ."<div style='width: 20px'></div><a href="."/admin/consignment_report/sendMsg?sample_id=".$this->id.">消息提醒</a>";
         });
 
         // 查询过滤
@@ -84,6 +92,8 @@ class ConsignmentSampleController extends Controller
                                     筛选当天报告数据
                                  </a>");
         });
+
+
 //          头部添加搜索按钮
 //        $grid->header(function ($query) {
 //            return "<a class='btn btn-primary' href="."/admin/consignment_sample?create_time[start]=".date('Y-m-d 00:00:00').">当天/未打印</a>";
@@ -91,7 +101,18 @@ class ConsignmentSampleController extends Controller
 
         return $grid;
     }
+    
+    // 点击消息提醒 is_send 变成 是
+    public function updateReportIsSend()
+    {
+        $reportId = request()->report_id;
+        //dd($reportId);
+        ConsignmentReport::where('id',$reportId)->update(['is_send'=>1]);
 
+        admin_toastr('消息发送成功！', 'success');
+        return back();
+    }
+    
     /**
      * Make a show builder.
      *

@@ -18,6 +18,7 @@ Route::group([
 
     $router->get('/', 'HomeController@index')->name('admin.home');
     $router->resource('/users', 'Admin\UserController');
+    $router->post('/consignment_sample/update_report_is_send', 'Lab\ConsignmentSampleController@updateReportIsSend');
     $router->resource('/consignment_sample', 'Lab\ConsignmentSampleController');
     $router->get('/customer/add_customer', 'Lab\CustomerController@addCustomerIndex');// 新增记录接口
 
