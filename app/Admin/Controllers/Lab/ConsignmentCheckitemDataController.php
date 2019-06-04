@@ -33,10 +33,10 @@ class ConsignmentCheckitemDataController extends Controller
         //$grid->cate3('Cate3');
         //$grid->cate4('Cate4');
         //$grid->risk_level('Risk level');
-        $grid->itemname('检测项目');
-        $grid->standard_name('判定依据');
-        $grid->test_method('Test method');
-        $grid->determine_basis('检测依据');
+        $grid->itemname('检测项目')->editable();
+        $grid->standard_name('判定依据')->editable();
+        $grid->test_method('Test method')->editable();
+        $grid->determine_basis('检测依据')->editable();
         $grid->loq('定量限')->display(function ($loq) {
             return $loq.$this->loq_unit;
         });
