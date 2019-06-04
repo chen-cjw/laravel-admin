@@ -24,6 +24,8 @@ Route::group([
     $router->resource('/consignment_report', 'Lab\ConsignmentReportController');
     $router->resource('/consignment_checkitem', 'Lab\ConsignmentCheckitemController');
     $router->resource('/customer', 'Lab\CustomerController');// 客户管理
+    $router->resource('/consignment_checkitem_data', 'Lab\ConsignmentCheckitemDataController');// 项目数据
+    $router->resource('/org', 'Lab\OrgController');// 部门管理
 
 
 });
