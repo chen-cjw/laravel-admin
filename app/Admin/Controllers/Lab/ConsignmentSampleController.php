@@ -79,6 +79,12 @@ class ConsignmentSampleController extends Controller
 
         });
         //id   样品编号 样品名称  客户名称   是否打印   是否发送模板消息   检验结论  检验依据
+
+        //  头部添加搜索按钮
+        $grid->header(function ($query) {
+            return "<a class='btn btn-primary' href="."/admin/consignment_sample?create_time[start]=".date('Y-m-d 00:00:00').">当天/未打印</a>";
+        });
+
         return $grid;
     }
 
