@@ -61,8 +61,6 @@ class ConsignmentSampleController extends Controller
         });
         $grid->comment('操作')->display(function () {
             return "<a href="."/admin/consignment_checkitem?sample_id=".$this->id.">检测项目</a>";
-//                .view('update_is_send',['report_id'=>$this->report->id]);
-//                ."<div style='width: 20px'></div><a href="."/admin/consignment_report/sendMsg?sample_id=".$this->id.">消息提醒</a>";
         });
 
         // 查询过滤
@@ -85,19 +83,13 @@ class ConsignmentSampleController extends Controller
             });
 
         });
-        //id   样品编号 样品名称  客户名称   是否打印   是否发送模板消息   检验结论  检验依据
+        // 头部按钮
         $grid->tools(function (Grid\Tools $tools){
 
             $tools->append("<a class='btn btn-warning btn-sm' href="."/admin/consignment_sample?create_time[start]=".date('Y-m-d 00:00:00').">
                                     筛选当天报告数据
                                  </a>");
         });
-
-
-//          头部添加搜索按钮
-//        $grid->header(function ($query) {
-//            return "<a class='btn btn-primary' href="."/admin/consignment_sample?create_time[start]=".date('Y-m-d 00:00:00').">当天/未打印</a>";
-//        });
 
         return $grid;
     }
@@ -106,39 +98,10 @@ class ConsignmentSampleController extends Controller
     public function updateReportIsSend()
     {
         $reportId = request()->report_id;
-        //dd($reportId);
         ConsignmentReport::where('id',$reportId)->update(['is_send'=>1]);
 
         admin_toastr('消息发送成功！', 'success');
         return back();
     }
     
-    /**
-     * Make a show builder.
-     *
-     * @param mixed $id
-     * @return Show
-     */
-    protected function detail($id)
-    {
-        $show = new Show(ConsignmentSample::findOrFail($id));
-
-
-
-        return $show;
-    }
-
-    /**
-     * Make a form builder.
-     *
-     * @return Form
-     */
-    protected function form()
-    {
-        $form = new Form(new ConsignmentSample);
-
-
-
-        return $form;
-    }
 }
