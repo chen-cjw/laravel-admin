@@ -57,7 +57,7 @@ class ConsignmentSampleController extends Controller
             if($this->report) {
                 return view('update_is_send',["report_id"=>$this->report['id']]);
             }
-            return admin_toastr('消息提醒失败,关系错了！', 'error') ;
+            //return admin_toastr('消息提醒失败,关系错了！', 'error') ;
         });
         $grid->comment('操作')->display(function () {
             return "<a href="."/admin/consignment_checkitem?sample_id=".$this->id.">检测项目</a>";
@@ -83,6 +83,14 @@ class ConsignmentSampleController extends Controller
             });
 
         });
+
+        //  批量操作
+        $grid->tools(function (Grid\Tools $tools) {
+            $tools->batch(function (Grid\Tools\BatchActions $actions) {
+//                $actions->disableDelete();
+            });
+        });
+
         // 头部按钮
         $grid->tools(function (Grid\Tools $tools){
 
