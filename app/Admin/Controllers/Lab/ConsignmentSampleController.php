@@ -4,6 +4,7 @@ namespace App\Admin\Controllers\Lab;
 
 use App\Admin\Controllers\Controller;
 use App\Admin\TimestampBetween;
+use App\Model2s\CustomerSendhis;
 use App\Models\ConsignmentReport;
 use App\Models\ConsignmentSample;
 use Encore\Admin\Controllers\HasResourceActions;
@@ -11,6 +12,7 @@ use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
+use DB;
 
 class ConsignmentSampleController extends Controller
 {
@@ -56,8 +58,11 @@ class ConsignmentSampleController extends Controller
             }
         });
         $grid->message_comment('消息提醒')->display(function () {
+            if($this->report['is_send'] == 1) {
+                return '<button type="button" class="btn btn-warning btn-xs">已通知</button>';
+            }
             if($this->report) {
-                return view('update_is_send',["report_id"=>$this->report['id']]);
+                return view('update_is_send',["report_id"=>$this->report['id'],'id'=>$this->id]);
             }
             //return admin_toastr('消息提醒失败,关系错了！', 'error') ;
         });
@@ -104,14 +109,33 @@ class ConsignmentSampleController extends Controller
         return $grid;
     }
     
-    // 点击消息提醒 is_send 变成 是
+    // todo *(加事物) 点击消息提醒 is_send 变成 是 || 连接到了其他数据库
     public function updateReportIsSend()
     {
         $reportId = request()->report_id;
-        ConsignmentReport::where('id',$reportId)->update(['is_send'=>1]);
+        $sampleId = request()->sample_id;
 
-        admin_toastr('消息发送成功！', 'success');
-        return back();
+        DB::beginTransaction();
+        try {
+            // 修改状态
+            ConsignmentReport::where('id',$reportId)->update(['is_send'=>1]);
+
+            $consignmentSample = ConsignmentSample::find($sampleId);
+            // 到另外一个数据，发送消息用
+            CustomerSendhis::create([
+                'code'=>$consignmentSample['code'],
+                'name'=>$consignmentSample['name'],
+                //'openid'=>$consignmentSample->consignment->openid,
+                'create_time'=>time(),
+            ]);
+
+            DB::commit();
+            admin_toastr('消息发送成功！', 'success');
+            return back();
+        } catch (\Exception $ex) {
+            DB::rollback();
+            \Log::error('消息发送成功', ['msg' => $ex->getMessage()]);
+        }
     }
     
 }

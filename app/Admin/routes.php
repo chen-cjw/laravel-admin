@@ -4,7 +4,6 @@ use Illuminate\Routing\Router;
 
 Admin::registerAuthRoutes();
 
-Route::get('/admin/customer_sendhis', 'App\Admin\Controllers\Lab\CustomerSendhisController@index');// 2、查询待发送消息接口
 Route::get('/admin/customer/add_customer', 'App\Admin\Controllers\Lab\CustomerController@addCustomerIndex');// 新增记录接口
 Route::post('/admin/customer/add_customer', 'App\Admin\Controllers\Lab\CustomerController@addCustomer');// 新增记录接口
 

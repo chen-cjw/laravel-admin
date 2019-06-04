@@ -19,4 +19,5 @@ class ConsignmentSample extends Model
     {
         return $this->hasOne(ConsignmentReport::class,'sample_id','id');
     }
+
 }
