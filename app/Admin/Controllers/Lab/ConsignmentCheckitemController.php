@@ -31,7 +31,7 @@ class ConsignmentCheckitemController extends Controller
         $grid->disableActions(); // 禁用行操作列
         $grid->disableCreateButton();
 
-        $grid->id('ID');
+        $grid->id('ID')->sortable();
         $grid->name('项目名称')->style('max-width:80px;word-break:break-all;');
         $grid->unit('样品单位')->style('max-width:100px;word-break:break-all;');
         $grid->tech_req('技术要求')->editable()->style('max-width:150px;word-break:break-all;');
@@ -39,10 +39,10 @@ class ConsignmentCheckitemController extends Controller
         $grid->test_method('检测方法')->editable()->style('max-width:150px;word-break:break-all;');
         $grid->create_time('添加时间')->display(function($create_time) {
             return date('Y-m-d H:i',$create_time);
-        })->style('max-width:100px;word-break:break-all;');
+        })->style('max-width:100px;word-break:break-all;')->sortable();
         $grid->update_time('修改时间')->display(function($update_time) {
                 return date('Y-m-d H:i',$update_time);
-            })->style('max-width:100px;word-break:break-all;');
+            })->style('max-width:100px;word-break:break-all;')->sortable();
 
         // 查询过滤
         $grid->filter(function($filter){
@@ -53,6 +53,14 @@ class ConsignmentCheckitemController extends Controller
 
         });
 
+        // 表单右上角
+        $grid->disableExport();
+        //  批量操作
+        $grid->tools(function (Grid\Tools $tools) {
+            $tools->batch(function (Grid\Tools\BatchActions $actions) {
+                $actions->disableDelete();
+            });
+        });
         return $grid;
     }
 
