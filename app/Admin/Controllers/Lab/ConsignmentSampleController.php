@@ -72,6 +72,10 @@ class ConsignmentSampleController extends Controller
 
         // 查询过滤
         $grid->filter(function($filter){
+            // 在`$grid`实例上操作
+            //$grid->expandFilter();
+            // 或者在filter回调里面操作`$filter`实例
+            $filter->expand();
             // 在这里添加字段过滤器
             $filter->column(1/2, function ($filter) {
                 $filter->like('code', '样品编号');
