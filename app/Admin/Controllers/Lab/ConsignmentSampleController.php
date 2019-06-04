@@ -51,7 +51,9 @@ class ConsignmentSampleController extends Controller
         $grid->disableCreateButton();
 
         $grid->download('下载')->display(function () {
-            return view('download',["report_id"=>52]);
+            if($this->report) {
+                return view('download', ["report_id" => $this->report['id']]);
+            }
         });
         $grid->message_comment('消息提醒')->display(function () {
             if($this->report) {
