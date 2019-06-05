@@ -28,6 +28,7 @@ Route::group([
     $router->resource('/customer', 'Lab\CustomerController');// 客户管理
     $router->resource('/consignment_checkitem_data', 'Lab\ConsignmentCheckitemDataController');// 项目数据
     $router->resource('/org', 'Lab\OrgController');// 部门管理
+    $router->post('/consignment_sample/update_report_is_send_all', 'Lab\ConsignmentSampleController@updateReportIsSendAll');//测试
 
 
 });

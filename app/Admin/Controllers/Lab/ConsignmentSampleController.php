@@ -3,6 +3,8 @@
 namespace App\Admin\Controllers\Lab;
 
 use App\Admin\Controllers\Controller;
+use App\Admin\Extensions\Tools\ReleasePost;
+use App\Admin\Extensions\Tools\SendMessage;
 use App\Admin\TimestampBetween;
 use App\Model2s\CustomerSendhis;
 use App\Models\ConsignmentReport;
@@ -99,17 +101,15 @@ class ConsignmentSampleController extends Controller
             });
 
         });
-
-        //  批量操作
-        $grid->tools(function (Grid\Tools $tools) {
-            $tools->batch(function (Grid\Tools\BatchActions $actions) {
-//                $actions->disableDelete();
-            });
-        });
-
         // 头部按钮
         $grid->tools(function (Grid\Tools $tools){
-
+            $tools->batch(function ($batch) {
+                $batch->add('批量通知', new SendMessage(1));
+            });
+            //  批量操作
+            $tools->batch(function (Grid\Tools\BatchActions $actions) {
+                $actions->disableDelete();
+            });
             $tools->append("<a class='btn btn-warning btn-sm' href="."/admin/consignment_sample?create_time[start]=".date('Y-m-d 00:00:00').">
                                     筛选当天报告数据
                                  </a>");
@@ -138,8 +138,34 @@ class ConsignmentSampleController extends Controller
             ConsignmentReport::where('id',$reportId)->update(['is_send'=>1]);
 
             DB::commit();
-            admin_toastr('ID是'.$sampleId.'的，消息发送成功！', 'success');
+            admin_toastr('ID是'.$sampleId.'的，消息通知发送成功！', 'success');
             return redirect('/admin/consignment_sample');
+        } catch (\Exception $ex) {
+            DB::rollback();
+            \Log::error('消息发送失败', ['msg' => $ex->getMessage()]);
+        }
+    }
+
+
+    public function updateReportIsSendAll()
+    {
+        DB::beginTransaction();
+        try {
+            foreach (ConsignmentSample::find(request()->get('ids')) as $consignmentSample) {
+
+                if($consignmentSample->report['is_send'] != 1) {
+                    // 没有发送
+//                    $customerSendhisRes = CustomerSendhis::create([
+//                        'code'=>$consignmentSample['code'],
+//                        'name'=>$consignmentSample['name'],
+//                        //'openid'=>$consignmentSample->consignment->openid,
+//                        'create_time'=>time(),
+//                    ]);
+                    $consignmentSample->report()->where('id',$consignmentSample->report['id'])->update(['is_send'=>1]);
+                }
+                // todo 已经发送不做处理
+            }
+            DB::commit();
         } catch (\Exception $ex) {
             DB::rollback();
             \Log::error('消息发送失败', ['msg' => $ex->getMessage()]);

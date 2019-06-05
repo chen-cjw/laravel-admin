@@ -3,6 +3,7 @@
 namespace App\Admin\Controllers\Lab;
 
 use App\Admin\Controllers\Controller;
+use App\Models\ConsignmentSample;
 use App\Models\Org;
 use Encore\Admin\Controllers\HasResourceActions;
 use Encore\Admin\Form;
