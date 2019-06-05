@@ -101,22 +101,5 @@ class CustomerController extends Controller
             ->description('管理')
             ->body(view('customer'));
     }
-    public function addCustomer( )
-    {
-        //customer_name ,tel,car_no,openid
-        $consignmentSample = \request()->only(['customer_name' ,'car_no']);
-        $addCustomerData = \request()->only(['openid' ,'tel']);
-        $customer = Customer::where('tel',\request()->tel)->first();
-        if(!$customer) {
-            $customer = Customer::create($addCustomerData);
-        }
-        ConsignmentCheckitem::create(['sample_id'=>$customer->id]);
-        ConsignmentReport::create(['sample_id'=>$customer->id]);
-        $addCustomerData['sample_id'] =  $customer->id;
-        ConsignmentSample::create($consignmentSample);
-        //admin_toastr('新增记录成功！', 'success');
-        return ['code'=>200,'message'=>'新增记录成功'];
-        return redirect('/admin/customer/add_customer')->with('message', '新增记录成功！');
 
-    }
 }

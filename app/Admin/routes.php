@@ -4,8 +4,11 @@ use Illuminate\Routing\Router;
 
 Admin::registerAuthRoutes();
 
-Route::get('/admin/customer/add_customer', 'App\Admin\Controllers\Lab\CustomerController@addCustomerIndex');// 新增记录接口
-Route::post('/admin/customer/add_customer', 'App\Admin\Controllers\Lab\CustomerController@addCustomer');// 新增记录接口
+Route::post('/api/sample/add_sampleorder', 'App\Admin\Controllers\Api\ConsignmentSampleController@addSampleOrder');//
+
+//Route::get('/api/sample/add_sampleorder', 'App\Admin\Controllers\Api\ConsignmentSampleController@addSampleOrder');//
+
+// 新增任务记录接口
 
 Route::group([
     'prefix'        => config('admin.route.prefix'),
@@ -19,7 +22,6 @@ Route::group([
     $router->resource('/users', 'Admin\UserController');
     $router->post('/consignment_sample/update_report_is_send', 'Lab\ConsignmentSampleController@updateReportIsSend');
     $router->resource('/consignment_sample', 'Lab\ConsignmentSampleController');
-    $router->get('/customer/add_customer', 'Lab\CustomerController@addCustomerIndex');// 新增记录接口
 
     $router->resource('/consignment_report', 'Lab\ConsignmentReportController');
     $router->resource('/consignment_checkitem', 'Lab\ConsignmentCheckitemController');
