@@ -152,15 +152,14 @@ class ConsignmentSampleController extends Controller
         DB::beginTransaction();
         try {
             foreach (ConsignmentSample::find(request()->get('ids')) as $consignmentSample) {
-
+                // 没处理，就发送
                 if($consignmentSample->report['is_send'] != 1) {
-                    // 没有发送
-//                    $customerSendhisRes = CustomerSendhis::create([
-//                        'code'=>$consignmentSample['code'],
-//                        'name'=>$consignmentSample['name'],
-//                        //'openid'=>$consignmentSample->consignment->openid,
-//                        'create_time'=>time(),
-//                    ]);
+                    $customerSendhisRes = CustomerSendhis::create([
+                        'code'=>$consignmentSample['code'],
+                        'name'=>$consignmentSample['name'],
+                        //'openid'=>$consignmentSample->consignment->openid,
+                        'create_time'=>time(),
+                    ]);
                     $consignmentSample->report()->where('id',$consignmentSample->report['id'])->update(['is_send'=>1]);
                 }
                 // todo 已经发送不做处理
