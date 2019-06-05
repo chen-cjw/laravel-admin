@@ -63,6 +63,23 @@ class CustomerController extends Controller
         return $grid;
     }
 
+    protected function detail($id)
+    {
+        $show = new Show(Customer::findOrFail($id));
+
+        $show->id('ID');
+        $show->code('客户编号');
+        $show->name('客户名称');
+        $show->contactor('联系人');
+        $show->tel('联系电话');
+        $show->email('邮箱');
+        $show->address('地址');
+        $show->receivables('应收账款数字');
+        $show->fax('传真');
+        $show->is_delete('是否删除')->using(['否','是']);
+
+        return $show;
+    }
     /**
      * Make a form builder.
      *
