@@ -3,6 +3,7 @@
 namespace App\Admin\Controllers\Lab;
 
 use App\Admin\Controllers\Controller;
+use App\Admin\TimestampBetween;
 use App\Models\ConsignmentCheckitemData;
 use Encore\Admin\Controllers\HasResourceActions;
 use Encore\Admin\Form;
@@ -52,6 +53,24 @@ class ConsignmentCheckitemDataController extends Controller
         $grid->actions(function (Grid\Displayers\Actions $actions) {
             $actions->disableView();
         });
+
+        // 查询过滤
+        $grid->filter(function($filter){
+            $filter->column(1/2, function ($filter) {
+                $filter->like('itemname', '检测项目');
+                $filter->like('Cate1', 'Cate1');
+                $filter->like('determine_basis', '检测依据');
+
+            });
+            $filter->column(1/2, function ($filter) {
+                $filter->like('standard_name', '判定依据');
+                $filter->like('test_method', 'test_method');
+                $filter->use(new TimestampBetween('create_time','创建时间'))->datetime();
+            });
+
+
+        });
+
         return $grid;
     }
 

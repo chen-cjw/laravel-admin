@@ -16,7 +16,7 @@ class OrgController extends Controller
 
     public function __construct()
     {
-        $this->header = '部门管理';
+        $this->header = '部门';
     }
     public function index(Content $content)
     {
