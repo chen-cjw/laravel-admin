@@ -56,28 +56,6 @@ class OrgController extends Controller
     }
 
     /**
-     * Make a show builder.
-     *
-     * @param mixed $id
-     * @return Show
-     */
-    protected function detail($id)
-    {
-        $show = new Show(Org::findOrFail($id));
-
-        $show->id('Id');
-        $show->org_name('Org name');
-        $show->parent_id('Parent id');
-        $show->lab_id('Lab id');
-        $show->remark('Remark');
-        $show->create_time('Create time');
-        $show->update_time('Update time');
-        $show->parent_name('Parent name');
-
-        return $show;
-    }
-
-    /**
      * Make a form builder.
      *
      * @return Form
